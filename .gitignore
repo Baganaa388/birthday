@@ -1,0 +1,12 @@
+# Original photos (the site uses the background-free versions in images/)
+*.jpg
+*.jpeg
+*.JPG
+image.png
+
+# Local notes with the admin password
+Claude.md
+CLAUDE.md
+
+# Test leftovers
+_t*.html

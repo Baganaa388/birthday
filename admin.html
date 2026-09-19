@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Урилгын хариу</title>
+  <meta name="theme-color" content="#F9D3DA">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <main class="page admin">
+    <header class="admin__head">
+      <p class="hero__kicker" id="adminKicker">Урилгын хариу</p>
+      <h1 class="admin__title">Зочдын жагсаалт</h1>
+    </header>
+
+    <!-- Login -->
+    <section class="card" id="loginView">
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label class="field__label" for="aUser">Нэвтрэх нэр</label>
+          <input class="field__input" id="aUser" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="aPass">Нууц үг</label>
+          <input class="field__input" id="aPass" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn--solid btn--block" type="submit" id="loginBtn">Нэвтрэх</button>
+        <p class="form-msg" id="loginMsg" role="status"></p>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashView" hidden>
+      <div class="stats">
+        <div class="stat stat--mint"><b id="stGuests">0</b><span>Ирэх хүн</span></div>
+        <div class="stat stat--butter"><b id="stAdults">0</b><span>Том хүн</span></div>
+        <div class="stat stat--lilac"><b id="stKids">0</b><span>Хүүхэд</span></div>
+        <div class="stat stat--rose"><b id="stNo">0</b><span>Ирэхгүй</span></div>
+      </div>
+
+      <div class="admin__bar">
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" role="tab" aria-selected="true" data-tab="rsvp" type="button">Хариу <span id="cntRsvp">0</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="wishes" type="button">Ерөөл <span id="cntWish">0</span></button>
+        </div>
+        <input class="field__input admin__search" id="search" type="search" placeholder="Нэрээр хайх" aria-label="Нэрээр хайх">
+      </div>
+
+      <ul class="entries" id="list" aria-live="polite"></ul>
+      <p class="admin__empty" id="empty" hidden></p>
+
+      <div class="btn-row">
+        <button class="btn btn--solid" type="button" id="refreshBtn">Шинэчлэх</button>
+        <button class="btn btn--outline" type="button" id="logoutBtn">Гарах</button>
+      </div>
+      <p class="card__note admin__updated" id="updated"></p>
+    </section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

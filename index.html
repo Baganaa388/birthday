@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>И.Амирлан 2 нас</title>
+  <meta name="description" content="Бидний бяцхан И.Амирлан 2 нас хүрч байна. Төрсөн өдрийн баярт урьж байна!">
+  <meta name="theme-color" content="#F9D3DA">
+  <meta name="color-scheme" content="light">
+
+  <!-- Messenger, Facebook-т линк явуулахад харагдах мэдээлэл -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="И.Амирлан 2 нас хүрч байна 🎈">
+  <meta property="og:description" content="10 сарын 10, Бямба гараг, 12:00. Баярт маань хүрэлцэн ирээрэй!">
+  <meta property="og:image" content="images/white-dress.webp">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="is-locked">
+
+  <!-- Reusable balloon drawing -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="balloon" viewBox="0 0 60 150">
+      <path d="M30 74 C 22 92, 38 104, 30 122 S 26 140, 32 150" fill="none" stroke="#A2536E" stroke-width="1.5"/>
+      <ellipse cx="30" cy="36" rx="26" ry="33" fill="currentColor"/>
+      <path d="M25 72 L35 72 L30 66 Z" fill="currentColor"/>
+      <ellipse cx="21" cy="24" rx="5" ry="9" fill="#fff" opacity=".55" transform="rotate(-25 21 24)"/>
+    </symbol>
+    <!-- Glitter butterfly wing (left wing; the right one is mirrored) -->
+    <symbol id="wing" viewBox="0 0 50 60" overflow="visible">
+      <path d="M50 29 C 41 6, 15 -3, 5 7 C -3 17, 9 33, 50 31 Z" fill="currentColor"/>
+      <path d="M50 32 C 31 30, 11 40, 15 52 C 19 62, 40 55, 50 34 Z" fill="currentColor" opacity=".85"/>
+      <path d="M46 28 C 38 12, 20 6, 12 12 C 7 18, 16 27, 46 29 Z" fill="#fff" opacity=".35"/>
+      <path d="M50 29 C 41 6, 15 -3, 5 7 C -3 17, 9 33, 50 31 Z M50 32 C 31 30, 11 40, 15 52 C 19 62, 40 55, 50 34 Z" fill="none" stroke="#fff" stroke-width="1.2" opacity=".8"/>
+      <g fill="#fff">
+        <circle cx="14" cy="12" r="1.4"/><circle cx="22" cy="8" r=".9"/><circle cx="10" cy="20" r="1"/>
+        <circle cx="30" cy="16" r="1.1"/><circle cx="19" cy="24" r=".8"/><circle cx="36" cy="24" r=".9"/>
+        <circle cx="22" cy="44" r="1.2"/><circle cx="30" cy="38" r=".8"/><circle cx="18" cy="51" r=".9"/><circle cx="36" cy="46" r=".7"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- ================= COVER ================= -->
+  <div class="cover" id="cover">
+    <div class="cover__inner">
+      <div class="envelope">
+        <div class="envelope__back"></div>
+        <div class="envelope__letter" aria-hidden="true">
+          <span class="envelope__letter-num" data-bind="age">2</span>
+        </div>
+        <div class="envelope__pocket"></div>
+        <div class="envelope__flap"></div>
+        <button class="envelope__seal" id="seal" type="button" aria-label="Урилгыг нээх" data-bind="initial">А</button>
+      </div>
+      <p class="cover__to">Хүлээн авагч</p>
+      <p class="cover__guest" id="coverGuest">Эрхэм зочин</p>
+      <button class="btn btn--solid cover__btn" id="openBtn" type="button">Урилга нээх</button>
+    </div>
+  </div>
+
+  <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+  <canvas class="sparkles" id="sparkles" aria-hidden="true"></canvas>
+  <div class="flyers" id="flyers" aria-hidden="true"></div>
+  <button class="music-btn" id="musicBtn" type="button" aria-label="Хөгжим асаах" aria-pressed="false" hidden>
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M9 18.5a3 3 0 1 1-2-2.83V5.5l12-2.5v12.5a3 3 0 1 1-2-2.83V7.1l-8 1.67z"/></svg>
+  </button>
+
+  <main class="page" id="top" tabindex="-1">
+
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+      <div class="bunting" aria-hidden="true">
+        <svg class="bunting__string" viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 2 Q50 38 100 2" /></svg>
+      </div>
+      <svg class="balloon balloon--left" aria-hidden="true"><use href="#balloon"/></svg>
+      <svg class="balloon balloon--right" aria-hidden="true"><use href="#balloon"/></svg>
+
+      <p class="hero__kicker">Бидний бяцхан нар</p>
+      <h1 class="hero__name" data-bind="name">Амирлан</h1>
+
+      <div class="cake">
+        <div class="cake__candle">
+          <button class="cake__flame" id="flameBtn" type="button" aria-label="Лааг үлээх">
+            <span class="cake__fire"></span><span class="cake__smoke"></span>
+          </button>
+        </div>
+        <div class="cake__num" aria-hidden="true" data-bind="age">2</div>
+      </div>
+      <p class="hero__age">нас хүрч байна!</p>
+      <p class="hero__hint" id="blowHint" aria-live="polite">Лааны гал дээр дараад үлээгээрэй</p>
+
+      <p class="date-pill">
+        <span data-bind="dateShort">10.10</span>
+        <span data-bind="weekday">Бямба</span>
+        <span data-bind="time">12:00</span>
+      </p>
+    </header>
+
+    <!-- ================= LETTER ================= -->
+    <section class="letter" aria-labelledby="h-letter" data-perch="left">
+      <h2 class="letter__title" id="h-letter" data-bind="greeting">Хайрт хамаатан садан, найз нөхөд минь</h2>
+      <div class="letter__body" id="letterBody"></div>
+      <p class="letter__sign">
+        <span>Хайрлан урих</span>
+        <strong data-bind="parents">Аав Бат-Эрдэнэ, ээж Сарангэрэл</strong>
+      </p>
+    </section>
+
+    <figure class="portrait" data-perch="right">
+      <div class="portrait__stage">
+        <img class="portrait__img" id="portraitImg" alt="" decoding="async">
+        <span class="portrait__fallback" aria-hidden="true" data-bind="initial">А</span>
+      </div>
+      <figcaption class="portrait__caption" id="heroCaption">Удахгүй 2 настай</figcaption>
+    </figure>
+
+    <!-- ================= WHEN & WHERE ================= -->
+    <section class="section" aria-labelledby="h-when">
+      <h2 class="section__title" id="h-when">Хэзээ, хаана</h2>
+      <div class="ticket" data-perch="right">
+        <div class="ticket__part ticket__when">
+          <div class="ticket__day">
+            <span class="ticket__day-num" data-bind="day">10</span>
+            <span class="ticket__day-month" data-bind="monthLabel">10 сар</span>
+          </div>
+          <div class="ticket__when-text">
+            <strong><span data-bind="weekday">Бямба</span> гараг</strong>
+            <span><span data-bind="time">12:00</span>–<span data-bind="endTime">15:00</span></span>
+            <small>Зочдыг <span data-bind="arrival">11:45</span>-аас угтана</small>
+          </div>
+        </div>
+        <div class="ticket__perf" aria-hidden="true"></div>
+        <ul class="ticket__part ticket__facts">
+          <li>
+            <span class="ticket__icon ticket__icon--lilac" aria-hidden="true">📍</span>
+            <div><strong data-bind="venue"></strong><span data-bind="address"></span></div>
+          </li>
+          <li>
+            <span class="ticket__icon ticket__icon--rose" aria-hidden="true">🎀</span>
+            <div><strong data-bind="dressTitle"></strong><span data-bind="dressNote"></span></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= COUNTDOWN ================= -->
+    <section class="section" aria-labelledby="h-cd">
+      <h2 class="section__title" id="h-cd">Баяр хүртэл</h2>
+      <div class="countdown" id="countdown">
+        <div class="countdown__tile countdown__tile--butter"><b id="cdD">0</b><span>өдөр</span></div>
+        <div class="countdown__tile countdown__tile--mint"><b id="cdH">0</b><span>цаг</span></div>
+        <div class="countdown__tile countdown__tile--lilac"><b id="cdM">0</b><span>минут</span></div>
+        <div class="countdown__tile countdown__tile--rose"><b id="cdS">0</b><span>секунд</span></div>
+      </div>
+      <a class="btn btn--outline btn--block" id="calBtn" href="#" download="birthday.ics">Календарьт нэмэх</a>
+    </section>
+
+    <!-- ================= PROGRAM ================= -->
+    <section class="section" aria-labelledby="h-prog">
+      <h2 class="section__title" id="h-prog">Баярын хөтөлбөр</h2>
+      <ol class="timeline" id="program"></ol>
+    </section>
+
+    <!-- ================= ABOUT HER ================= -->
+    <section class="section" aria-labelledby="h-about">
+      <h2 class="section__title" id="h-about"><span data-bind="name">Амирлан</span> одоо ийм болсон</h2>
+      <ul class="stickies" id="facts" data-perch="left"></ul>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section class="section section--bleed" aria-labelledby="h-gal">
+      <h2 class="section__title" id="h-gal">Хоёр жилийн дурсамж</h2>
+      <ul class="clothesline" id="gallery" tabindex="0" aria-label="Зургийн цомог, хажуу тийш гүйлгэнэ"></ul>
+      <p class="section__hint">Хажуу тийш гүйлгэж үзээрэй</p>
+    </section>
+
+    <!-- ================= MAP ================= -->
+    <section class="section" aria-labelledby="h-map">
+      <h2 class="section__title" id="h-map">Хэрхэн очих вэ</h2>
+      <div class="card" data-perch="right">
+        <div class="map"><iframe id="mapFrame" title="Байршлын газрын зураг" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        <p class="card__note"><b>Зогсоол.</b> <span data-bind="parking"></span></p>
+        <div class="btn-row">
+          <a class="btn btn--solid" id="mapBtn" target="_blank" rel="noopener">Газрын зураг</a>
+          <a class="btn btn--outline" data-tel>Залгах</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RSVP ================= -->
+    <section class="section" aria-labelledby="h-rsvp" id="rsvp">
+      <h2 class="section__title" id="h-rsvp">Ирэх эсэхээ мэдэгдээрэй</h2>
+      <div class="peek-wrap">
+        <img class="peek" id="peekImg" alt="" aria-hidden="true" decoding="async" loading="lazy">
+      </div>
+      <div class="card card--front">
+        <form id="rsvpForm" novalidate>
+          <p class="card__lead">Хоол, суудлаа бэлдэхэд хэрэгтэй тул <b data-bind="deadline">10 сарын 5</b>-ны дотор хариу өгөөрэй.</p>
+          <div class="field">
+            <label class="field__label" for="rName">Таны нэр</label>
+            <input class="field__input" type="text" id="rName" name="name" autocomplete="name" placeholder="Жишээ нь: Болд, Туяа" required>
+          </div>
+          <fieldset class="field">
+            <legend class="field__label">Ирэх үү?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="att" value="Очно" checked><span>Тийм, очно</span></label>
+              <label class="choice"><input type="radio" name="att" value="Гэр бүлээрээ очно"><span>Гэр бүлээрээ очно</span></label>
+              <label class="choice"><input type="radio" name="att" value="Очиж чадахгүй"><span>Харамсалтай нь очиж чадахгүй</span></label>
+            </div>
+          </fieldset>
+          <div class="field-row" id="countsRow">
+            <div class="field">
+              <span class="field__label" id="adLbl">Том хүн</span>
+              <div class="stepper" data-min="1" data-max="10" role="group" aria-labelledby="adLbl">
+                <button type="button" data-step="-1" aria-label="Том хүн хасах">−</button>
+                <output id="adults" aria-live="polite">1</output>
+                <button type="button" data-step="1" aria-label="Том хүн нэмэх">+</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="field__label" id="kdLbl">Хүүхэд</span>
+              <div class="stepper" data-min="0" data-max="10" role="group" aria-labelledby="kdLbl">
+                <button type="button" data-step="-1" aria-label="Хүүхэд хасах">−</button>
+                <output id="kids" aria-live="polite">0</output>
+                <button type="button" data-step="1" aria-label="Хүүхэд нэмэх">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn--solid btn--block" type="submit">Хариу илгээх</button>
+          <p class="form-msg" id="rsvpMsg" role="status"></p>
+        </form>
+
+        <div class="thanks" id="rsvpThanks" hidden>
+          <div class="thanks__icon" aria-hidden="true">💌</div>
+          <p class="thanks__title">Хариу илгээгдлээ</p>
+          <p id="rsvpThanksText"></p>
+          <div class="btn-row">
+            <button class="btn btn--outline" type="button" id="copyRsvp">Мессежийг хуулах</button>
+            <button class="btn btn--outline" type="button" id="rsvpAgain">Хариугаа засах</button>
+          </div>
+          <p class="card__note" id="copyNote" aria-live="polite">SMS нээгдээгүй бол мессежээ хуулаад илгээгээрэй.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WISHES ================= -->
+    <section class="section" aria-labelledby="h-wish">
+      <h2 class="section__title" id="h-wish">Ерөөлөө үлдээгээрэй</h2>
+      <div class="card" data-perch="left">
+        <form id="wishForm" novalidate>
+          <p class="card__lead">Ерөөлийг тань хөөрхөн карт болгож өгнө. Хадгалаад эсвэл шууд илгээгээрэй. Томроод уншихад нь бид хадгалж үлдээнэ.</p>
+          <div class="field">
+            <label class="field__label" for="wName">Хэнээс</label>
+            <input class="field__input" type="text" id="wName" maxlength="40" placeholder="Жишээ нь: Эмээ, өвөө нь">
+          </div>
+          <div class="field">
+            <label class="field__label" for="wText">Ерөөл</label>
+            <textarea class="field__input" id="wText" maxlength="240" placeholder="Жишээ нь: Бидний хөөрхөн охин үргэлж ийм инээмсэглэлтэй, эрүүл саруул өсөөрэй!"></textarea>
+          </div>
+          <button class="btn btn--solid btn--block" type="submit">Карт үүсгэх</button>
+          <p class="form-msg" id="wishMsg" role="status"></p>
+        </form>
+        <div class="card-preview" id="cardPreview" hidden>
+          <img id="cardImg" alt="Ерөөлийн карт">
+          <div class="btn-row">
+            <button class="btn btn--solid" type="button" id="shareCard">Илгээх</button>
+            <a class="btn btn--outline" id="saveCard" download="eroel-kart.png">Хадгалах</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="bunting bunting--footer" aria-hidden="true">
+        <svg class="bunting__string" viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 2 Q50 38 100 2" /></svg>
+      </div>
+      <p class="footer__title">Таныг хүлээж байна!</p>
+      <p class="footer__sign" data-bind="parents"></p>
+      <p>Асуух зүйл байвал <a data-tel data-bind="phoneLabel"></a></p>
+    </footer>
+  </main>
+
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/js/core.js" defer></script>
+  <script src="assets/js/effects.js" defer></script>
+  <script src="assets/js/render.js" defer></script>
+  <script src="assets/js/invite.js" defer></script>
+  <script src="assets/js/rsvp.js" defer></script>
+  <script src="assets/js/wishes.js" defer></script>
+  <script src="assets/js/scroll.js" defer></script>
+</body>
+</html>
