@@ -5,8 +5,8 @@
    ============================================================= */
 window.CONFIG = {
   child: {
-    name: "Амирлан",
-    fullName: "И.Амирлан",
+    name: "Анирлан",
+    fullName: "И.Анирлан",
     initial: "А",
     age: 1
   },
@@ -48,7 +48,7 @@ window.CONFIG = {
     "images/bath.webp"
   ],
   photos: [
-    { src: "images/tummy-time.webp", caption: "Хөөрхөн Амирлан" },
+    { src: "images/tummy-time.webp", caption: "Хөөрхөн Анирлан" },
     { src: "images/elephant.webp", caption: "Заан найзтайгаа" },
     { src: "images/pink-bib.webp", caption: "Хоолны цаг боллоо" },
     { src: "images/bath.webp", caption: "Усанд орох дуртай" },
