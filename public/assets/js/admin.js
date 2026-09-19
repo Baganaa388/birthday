@@ -1,8 +1,7 @@
 /* Admin page: logs in to the invitation server and lists the RSVPs.
    The password is checked by the server; the session lives in an HttpOnly cookie. */
 (function () {
-  const C = window.CONFIG;
-  const $ = s => document.querySelector(s);
+  const { C, $, h } = App;
   const NO = "Очиж чадахгүй";
 
   const SLOTS = C.event.slots;
@@ -17,23 +16,8 @@
     unavailable: "Сервертэй холбогдож чадсангүй. Сайтыг «npm start»-аар ажиллуулсан эсэхээ шалгана уу."
   };
 
-  async function api(path, options = {}) {
-    let res;
-    try {
-      res = await fetch(`api/admin/${path}`, {
-        method: options.method || "GET",
-        headers: options.body ? { "Content-Type": "application/json" } : undefined,
-        body: options.body ? JSON.stringify(options.body) : undefined,
-        credentials: "same-origin"
-      });
-    } catch (_) {
-      throw new Error("unavailable");
-    }
-    const body = await res.json().catch(() => null);
-    if (!body) throw new Error("unavailable");
-    if (!body.ok) throw new Error(body.error || "unavailable");
-    return body;
-  }
+  const api = (path, options) => App.api(`admin/${path}`, options);
+  const el = (tag, cls, text) => h(tag, { class: cls, text });
 
   /* ---------- views ---------- */
   function showLogin(message) {
@@ -101,23 +85,16 @@
     return `${p(d.getMonth() + 1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
   };
 
-  function el(tag, cls, text) {
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function deleteButton(kind, item, label) {
+  function deleteButton(rsvp) {
     const b = el("button", "entry__delete", "Устгах");
     b.type = "button";
-    b.setAttribute("aria-label", `${label} устгах`);
+    b.setAttribute("aria-label", `${rsvp.name} устгах`);
     b.addEventListener("click", async () => {
-      if (!confirm(`«${label}»-г устгах уу? Буцаах боломжгүй.`)) return;
+      if (!confirm(`«${rsvp.name}» гэсэн хариуг устгах уу? Буцаах боломжгүй.`)) return;
       b.disabled = true;
       try {
-        await api(`${kind}/${item.id}`, { method: "DELETE" });
-        data[kind] = data[kind].filter(x => x.id !== item.id);
+        await api(`rsvps/${rsvp.id}`, { method: "DELETE" });
+        data.rsvps = data.rsvps.filter(x => x.id !== rsvp.id);
         render();
       } catch (err) {
         b.disabled = false;
@@ -176,7 +153,7 @@
             el("span", "badge", `Том хүн ${r.adults}`),
             el("span", "badge", `Хүүхэд ${r.kids}`));
         }
-        meta.append(deleteButton("rsvps", r, r.name));
+        meta.append(deleteButton(r));
         li.append(top, meta);
         list.append(li);
       });

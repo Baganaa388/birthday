@@ -46,6 +46,7 @@ body {
   background-size: 36px 36px, 36px 36px;
   background-position: 0 0, 18px 18px;
   overflow-x: hidden;
+  overflow-x: clip;                /* no sideways scroll on phones, without making body a scroller */
 }
 body.is-locked { overflow: hidden; }
 img { display: block; max-width: 100%; }
@@ -128,10 +129,13 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .choice input:checked + span { border-color: var(--berry); background: var(--milk-2); }
 .choice input:checked + span::before { border-color: var(--berry); background: radial-gradient(circle, var(--berry) 0 5px, #fff 5.5px); }
 .choice input:focus-visible + span { outline: 3px solid var(--berry); outline-offset: 2px; }
-/* time-slot choice: time on the left, how many people already chose it on the right */
-.choice__time { flex: 1; font-weight: 800; }
+/* time-slot choice: time on the left, how many people already chose it on the right;
+   on narrow phones the count wraps under the time instead of squeezing it */
+.choice:has(.choice__time) span { flex-wrap: wrap; row-gap: 6px; }
+.choice__time { font-weight: 800; white-space: nowrap; }
 .choice__count {
   flex: none;
+  margin-left: auto;
   padding: 2px 10px;
   border-radius: 999px;
   background: var(--mint);
@@ -177,10 +181,13 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   transition: opacity .5s ease 1s;
 }
 .cover.is-open { opacity: 0; pointer-events: none; }
-.cover__inner { width: min(86vw, 340px); text-align: center; }
+/* the envelope also shrinks on short screens (phone held sideways) so the button stays visible */
+.cover { overflow-y: auto; }
+.cover__inner { width: max(170px, min(86vw, 340px, calc((100svh - 290px) * 1.33))); text-align: center; }
 
 .envelope {
   position: relative;
+  container-type: inline-size;     /* seal and tag scale with the envelope (cqw units) */
   aspect-ratio: 4 / 3;
   margin-bottom: 44px;
   perspective: 900px;
@@ -307,12 +314,12 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   left: 60%;
   top: 64%;
   z-index: 5;
-  padding: 7px 14px 6px 22px;
+  padding: .35em .7em .3em 1.1em;
   border-radius: 4px 12px 12px 4px;
   background: #FFF6E6;
   box-shadow: 0 4px 8px -4px rgba(74, 22, 40, .45);
   font-family: var(--font-hand);
-  font-size: 20px;
+  font-size: clamp(14px, 6cqw, 20px);
   font-weight: 700;
   line-height: 1;
   color: var(--berry);
@@ -325,16 +332,16 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .envelope__tag::before {                 /* punched hole */
   content: "";
   position: absolute;
-  left: 8px;
+  left: .4em;
   top: 50%;
-  width: 7px;
-  height: 7px;
-  margin-top: -3.5px;
+  width: .35em;
+  height: .35em;
+  margin-top: -.175em;
   border-radius: 50%;
   background: #EC9DB1;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .2);
 }
-.envelope__tag b { display: block; margin-top: 2px; font-size: 26px; }
+.envelope__tag b { display: block; margin-top: 2px; font-size: 1.3em; }
 @keyframes tag-swing { 50% { rotate: 4deg; } }
 .cover.is-open .envelope__tag { opacity: 0; }
 
@@ -346,9 +353,10 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   z-index: 6;
   display: grid;
   place-items: center;
-  width: 80px;
-  height: 80px;
-  margin: -40px 0 0 -40px;
+  --seal: clamp(52px, 24cqw, 80px);
+  width: var(--seal);
+  height: var(--seal);
+  margin: calc(var(--seal) / -2) 0 0 calc(var(--seal) / -2);
   padding: 0;
   border: 0;
   border-radius: 48% 52% 45% 55% / 54% 46% 56% 44%;
@@ -366,7 +374,7 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .envelope__seal::before {                /* pressed inner ring */
   content: "";
   position: absolute;
-  inset: 11px;
+  inset: 14%;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, .16);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, .35);
@@ -381,6 +389,8 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 }
 .envelope__seal svg {
   position: relative;
+  width: 38%;
+  height: 38%;
   fill: currentColor;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .4)) drop-shadow(0 -1px 0 rgba(255, 255, 255, .25));
 }
@@ -413,6 +423,7 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 
 .bunting {
   position: absolute;
+  overflow: hidden;                /* tilted end flags must not widen the page */
   top: 0;
   left: calc(var(--gutter) * -1);
   right: calc(var(--gutter) * -1);
@@ -724,7 +735,6 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .ticket__facts span:not(.ticket__icon) { display: block; font-size: 15px; line-height: 1.45; color: var(--berry-soft); }
 .ticket__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; font-size: 22px; }
 .ticket__icon--lilac { background: var(--lilac); }
-.ticket__icon--rose { background: var(--milk); }
 
 /* Countdown */
 .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
@@ -876,7 +886,8 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 /* ---------- 9. Photo peeking over the RSVP card ---------- */
 /* polaroids fanned out and tucked behind the card; they slide up when the section appears.
    --x is the offset from the middle photo, --y its distance (set in render.js). */
-.peek-wrap { position: relative; height: 140px; }
+/* isolation keeps the photos' z-index inside, so the card (z-index 1) always covers them */
+.peek-wrap { position: relative; height: 140px; isolation: isolate; }
 .peek {
   position: absolute;
   left: calc(50% - var(--w, 116px) / 2 + var(--x) * var(--gap, 26%));
@@ -891,7 +902,7 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   box-shadow: var(--shadow-paper);
 }
 .card--front { position: relative; z-index: 1; }
-.ticket, .stickies, .card { position: relative; }
+.ticket, .card { position: relative; }
 
 /* ---------- 10. Butterflies ---------- */
 .bfly {

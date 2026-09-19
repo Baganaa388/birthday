@@ -7,7 +7,6 @@ window.CONFIG = {
   child: {
     name: "Анирлан",
     fullName: "И.Анирлан",
-    initial: "А",
     age: 1
   },
 

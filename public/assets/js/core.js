@@ -41,7 +41,6 @@ window.App = (function () {
     day: String(+s.day),
     month: String(+s.month),
     dateShort: `${s.month}.${s.day}`,
-    dateLong: `${s.year} оны ${+s.month} сарын ${+s.day}`,
     monthLabel: `${+s.month} сар`,
     weekday: WEEKDAYS[s.weekday],
     time: `${s.hour}:${s.minute}`,

@@ -8,8 +8,6 @@
   /* ---------- simple text bindings ---------- */
   const bind = {
     name: C.child.name,
-    fullName: C.child.fullName || C.child.name,
-    initial: C.child.initial,
     age: C.child.age,
     parents: C.parents,
     greeting: C.letter.greeting,

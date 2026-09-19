@@ -3,7 +3,7 @@ import { Router } from "express";
 import { db } from "./db.js";
 import { rateLimit } from "./rate-limit.js";
 
-export const ATTENDANCE = ["Очно", "Гэр бүлээрээ очно", "Очиж чадахгүй"];
+const ATTENDANCE = ["Очно", "Гэр бүлээрээ очно", "Очиж чадахгүй"];
 const NOT_COMING = ATTENDANCE[2];
 // Slots come from public/assets/js/config.js; the server only checks the "HH:MM–HH:MM" shape.
 const SLOT_RE = /^\d{1,2}:\d{2}\s?[–-]\s?\d{1,2}:\d{2}$/;
