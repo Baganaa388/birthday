@@ -1,4 +1,4 @@
-// Admin API: login with a signed, HttpOnly session cookie; list and delete entries.
+// Admin API: login with a signed, HttpOnly session cookie; list and delete RSVPs.
 import { Router } from "express";
 import crypto from "node:crypto";
 import { db } from "./db.js";
@@ -56,9 +56,7 @@ function requireAdmin(req, res, next) {
 }
 
 const allRsvps = db.prepare("SELECT id, name, attendance, adults, kids, created_at, updated_at FROM rsvps ORDER BY updated_at DESC, id DESC");
-const allWishes = db.prepare("SELECT id, author, message, created_at FROM wishes ORDER BY id DESC");
 const deleteRsvp = db.prepare("DELETE FROM rsvps WHERE id = ?");
-const deleteWish = db.prepare("DELETE FROM wishes WHERE id = ?");
 
 export const adminRouter = Router();
 
@@ -77,15 +75,10 @@ adminRouter.post("/logout", (req, res) => {
 });
 
 adminRouter.get("/data", requireAdmin, (req, res) => {
-  res.json({ ok: true, rsvps: allRsvps.all(), wishes: allWishes.all() });
+  res.json({ ok: true, rsvps: allRsvps.all() });
 });
 
 adminRouter.delete("/rsvps/:id", requireAdmin, (req, res) => {
   deleteRsvp.run(Number(req.params.id));
-  res.json({ ok: true });
-});
-
-adminRouter.delete("/wishes/:id", requireAdmin, (req, res) => {
-  deleteWish.run(Number(req.params.id));
   res.json({ ok: true });
 });

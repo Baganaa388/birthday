@@ -1,12 +1,11 @@
-/* Admin page: logs in to the invitation server and lists RSVPs and wishes.
+/* Admin page: logs in to the invitation server and lists the RSVPs.
    The password is checked by the server; the session lives in an HttpOnly cookie. */
 (function () {
   const C = window.CONFIG;
   const $ = s => document.querySelector(s);
   const NO = "Очиж чадахгүй";
 
-  let data = { rsvps: [], wishes: [] };
-  let tab = "rsvps";
+  let data = { rsvps: [] };
 
   $("#adminKicker").textContent = `${C.child.fullName || C.child.name} ${C.child.age} нас`;
 
@@ -73,7 +72,7 @@
 
   $("#logoutBtn").addEventListener("click", async () => {
     await api("logout", { method: "POST" }).catch(() => {});
-    data = { rsvps: [], wishes: [] };
+    data = { rsvps: [] };
     showLogin();
   });
 
@@ -135,52 +134,29 @@
     $("#stKids").textContent = kids;
     $("#stNo").textContent = data.rsvps.length - coming.length;
     $("#cntRsvp").textContent = data.rsvps.length;
-    $("#cntWish").textContent = data.wishes.length;
 
     const q = $("#search").value.trim().toLowerCase();
     const list = $("#list");
     list.replaceChildren();
 
-    if (tab === "rsvps") {
-      data.rsvps.filter(r => r.name.toLowerCase().includes(q)).forEach(r => {
-        const no = r.attendance === NO;
-        const li = el("li", "entry");
-        const top = el("div", "entry__top");
-        top.append(el("span", "entry__name", r.name), el("span", "entry__date", fmtDate(r.updated_at)));
-        const meta = el("div", "entry__meta");
-        meta.append(el("span", `badge ${no ? "badge--no" : "badge--yes"}`, r.attendance));
-        if (!no) meta.append(el("span", "badge", `Том хүн ${r.adults}`), el("span", "badge", `Хүүхэд ${r.kids}`));
-        meta.append(deleteButton("rsvps", r, r.name));
-        li.append(top, meta);
-        list.append(li);
-      });
-    } else {
-      data.wishes.filter(w => `${w.author} ${w.message}`.toLowerCase().includes(q)).forEach(w => {
-        const li = el("li", "entry");
-        const top = el("div", "entry__top");
-        top.append(el("span", "entry__name", w.author || "Нэргүй"), el("span", "entry__date", fmtDate(w.created_at)));
-        const meta = el("div", "entry__meta");
-        meta.append(deleteButton("wishes", w, w.author || "Нэргүй ерөөл"));
-        li.append(top, el("p", "entry__text", w.message), meta);
-        list.append(li);
-      });
-    }
+    data.rsvps.filter(r => r.name.toLowerCase().includes(q)).forEach(r => {
+      const no = r.attendance === NO;
+      const li = el("li", "entry");
+      const top = el("div", "entry__top");
+      top.append(el("span", "entry__name", r.name), el("span", "entry__date", fmtDate(r.updated_at)));
+      const meta = el("div", "entry__meta");
+      meta.append(el("span", `badge ${no ? "badge--no" : "badge--yes"}`, r.attendance));
+      if (!no) meta.append(el("span", "badge", `Том хүн ${r.adults}`), el("span", "badge", `Хүүхэд ${r.kids}`));
+      meta.append(deleteButton("rsvps", r, r.name));
+      li.append(top, meta);
+      list.append(li);
+    });
 
     const empty = $("#empty");
     empty.hidden = list.children.length > 0;
-    empty.textContent = q
-      ? "Хайлтад тохирох зүйл олдсонгүй."
-      : tab === "rsvps" ? "Одоогоор хариу ирээгүй байна." : "Одоогоор ерөөл ирээгүй байна.";
+    empty.textContent = q ? "Хайлтад тохирох зүйл олдсонгүй." : "Одоогоор хариу ирээгүй байна.";
   }
 
-  document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
-    tab = b.dataset.tab;
-    document.querySelectorAll(".tab").forEach(t => {
-      t.classList.toggle("is-active", t === b);
-      t.setAttribute("aria-selected", String(t === b));
-    });
-    render();
-  }));
   $("#search").addEventListener("input", render);
 
   // Already logged in (cookie still valid)? Go straight to the dashboard.

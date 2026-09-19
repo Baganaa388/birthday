@@ -16,7 +16,9 @@ app.use("/api/admin", adminRouter);
 app.use("/api", guestRouter);
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "not_found" }));
 
-app.use(express.static(publicDir, { extensions: ["html"], maxAge: "1h" }));
+// Cache files only in production so local text edits show up on refresh.
+const isProd = process.env.NODE_ENV === "production";
+app.use(express.static(publicDir, { extensions: ["html"], maxAge: isProd ? "1h" : 0 }));
 
 app.use((err, req, res, next) => {
   if (err.type === "entity.parse.failed" || err.type === "entity.too.large") {

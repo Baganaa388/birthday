@@ -1,6 +1,6 @@
-# И.Амирлангийн 2 насны урилга
+# И.Амирлангийн 1 насны урилга
 
-Утсанд зориулсан төрсөн өдрийн урилга. Зочдын хариу, ерөөл серверийн өгөгдлийн санд (SQLite) хадгалагдаж, админ хуудсанд харагдана.
+Утсанд зориулсан төрсөн өдрийн урилга. Зочдын хариу серверийн өгөгдлийн санд (SQLite) хадгалагдаж, админ хуудсанд харагдана.
 
 ## Ажиллуулах
 
@@ -30,16 +30,16 @@ npm start
 
 ```
 server/index.js         Express сервер: public/ болон API
-server/db.js            SQLite хүснэгтүүд (rsvps, wishes)
-server/guest.js         Зочны API: POST /api/rsvp, GET/POST /api/wishes
+server/db.js            SQLite хүснэгт (rsvps)
+server/guest.js         Зочны API: POST /api/rsvp
 server/admin.js         Админ API: нэвтрэх, жагсаалт, устгах
 server/rate-limit.js    Хэт олон хүсэлтээс хамгаалах
 
 public/index.html       Урилга
 public/admin.html       Админ хуудас
 public/assets/js/config.js   ← Урилгын мэдээлэл: нэр, огноо, газар, хөтөлбөр, зураг
-public/assets/js/*.js   Урилгын логик (rsvp, wishes, scroll, effects …)
-public/images/*.webp    Дэвсгэргүй болгосон зургууд
+public/assets/js/*.js   Урилгын логик (rsvp, scroll, effects …)
+public/images/*.webp    Зургууд
 ```
 
 ## API
@@ -47,13 +47,10 @@ public/images/*.webp    Дэвсгэргүй болгосон зургууд
 | Арга   | Зам                        | Тайлбар                              |
 |--------|----------------------------|--------------------------------------|
 | POST   | `/api/rsvp`                | Хариу (нэг зочин засахад шинэчлэгдэнэ) |
-| GET    | `/api/wishes`              | Сүүлийн 30 ерөөл (урилга дээр)       |
-| POST   | `/api/wishes`              | Ерөөл нэмэх                          |
 | POST   | `/api/admin/login`         | Нэвтрэх (HttpOnly cookie)            |
 | POST   | `/api/admin/logout`        | Гарах                                |
-| GET    | `/api/admin/data`          | Бүх хариу, ерөөл                     |
+| GET    | `/api/admin/data`          | Бүх хариу                            |
 | DELETE | `/api/admin/rsvps/:id`     | Хариу устгах                         |
-| DELETE | `/api/admin/wishes/:id`    | Ерөөл устгах                         |
 
 Сервергүй (жишээ нь файлаар нээсэн) үед хариу SMS-ээр явна.
 

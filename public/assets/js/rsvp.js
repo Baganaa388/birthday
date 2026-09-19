@@ -83,7 +83,7 @@
     $("#copyNote").hidden = !bySms;
     lastText = lastText || composeText(d);
     $("#rsvpThanksText").textContent = d.attendance === NO
-      ? `${d.name}, мэдэгдсэнд баярлалаа. Доор ерөөлөө үлдээгээрэй.`
+      ? `${d.name}, мэдэгдсэнд баярлалаа.`
       : `${d.name}, баярлалаа! ${when.month} сарын ${when.day}-нд ${when.time} цагт хүлээж байна.`;
     if (celebrate && d.attendance !== NO) {
       const r = thanks.getBoundingClientRect();

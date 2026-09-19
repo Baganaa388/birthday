@@ -112,6 +112,6 @@
   /* ---------- map & phone ---------- */
   const { lat, lng } = C.event;
   $("#mapFrame").src = `https://www.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
-  $("#mapBtn").href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  $("#mapBtn").href = C.event.mapUrl || `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
   $$("[data-tel]").forEach(a => (a.href = `tel:${C.rsvp.phone}`));
 })();

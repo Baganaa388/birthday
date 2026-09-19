@@ -21,8 +21,6 @@ const upsertRsvp = db.prepare(`
     kids = excluded.kids,
     updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
 `);
-const insertWish = db.prepare("INSERT INTO wishes (author, message) VALUES (?, ?)");
-const latestWishes = db.prepare("SELECT id, author, message, created_at FROM wishes ORDER BY id DESC LIMIT 30");
 
 export const guestRouter = Router();
 const writeLimit = rateLimit({ windowMs: 60_000, max: 10 });
@@ -38,16 +36,4 @@ guestRouter.post("/rsvp", writeLimit, (req, res) => {
   const coming = attendance !== NOT_COMING;
   upsertRsvp.run(guestId, name, attendance, coming ? count(b.adults, 1, 10) : 0, coming ? count(b.kids, 0, 10) : 0);
   res.json({ ok: true });
-});
-
-guestRouter.get("/wishes", (req, res) => {
-  res.json({ ok: true, wishes: latestWishes.all() });
-});
-
-guestRouter.post("/wishes", writeLimit, (req, res) => {
-  const b = req.body ?? {};
-  const message = text(b.text, 240);
-  if (!message) return res.status(400).json({ ok: false, error: "invalid" });
-  const info = insertWish.run(text(b.from, 40), message);
-  res.json({ ok: true, id: Number(info.lastInsertRowid) });
 });

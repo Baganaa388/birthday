@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>И.Амирлан 2 нас</title>
-  <meta name="description" content="Бидний бяцхан И.Амирлан 2 нас хүрч байна. Төрсөн өдрийн баярт урьж байна!">
+  <title>И.Амирлан 1 нас</title>
+  <meta name="description" content="Бидний бяцхан И.Амирлан 1 нас хүрч байна. Анхны төрсөн өдрийн баярт урьж байна!">
   <meta name="theme-color" content="#F9D3DA">
   <meta name="color-scheme" content="light">
 
   <!-- Messenger, Facebook-т линк явуулахад харагдах мэдээлэл -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="И.Амирлан 2 нас хүрч байна 🎈">
-  <meta property="og:description" content="10 сарын 10, Бямба гараг, 12:00. Баярт маань хүрэлцэн ирээрэй!">
+  <meta property="og:title" content="И.Амирлан 1 нас хүрч байна 🎈">
+  <meta property="og:description" content="10 сарын 3, Бямба гараг, 12:00. Өрнөх хороолол 9А байр, 1208 тоот. Баярт маань хүрэлцэн ирээрэй!">
   <meta property="og:image" content="images/white-dress.webp">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 <body class="is-locked">
 
@@ -50,11 +50,19 @@
       <div class="envelope">
         <div class="envelope__back"></div>
         <div class="envelope__letter" aria-hidden="true">
-          <span class="envelope__letter-num" data-bind="age">2</span>
+          <span class="envelope__letter-num" data-bind="age">1</span>
         </div>
-        <div class="envelope__pocket"></div>
-        <div class="envelope__flap"></div>
-        <button class="envelope__seal" id="seal" type="button" aria-label="Урилгыг нээх" data-bind="initial">А</button>
+        <div class="envelope__pocket" aria-hidden="true">
+          <span class="envelope__fold envelope__fold--left"></span>
+          <span class="envelope__fold envelope__fold--right"></span>
+          <span class="envelope__fold envelope__fold--bottom"></span>
+        </div>
+        <div class="envelope__flap" aria-hidden="true"><span class="envelope__liner"></span></div>
+        <span class="envelope__twine" aria-hidden="true"></span>
+        <span class="envelope__tag" aria-hidden="true"><span data-bind="name">Амирлан</span><b><span data-bind="age">1</span> нас</b></span>
+        <button class="envelope__seal" id="seal" type="button" aria-label="Урилгыг нээх">
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.2 0 3.7 1.3 5.4 3.2 1.7-1.9 3.2-3.2 5.4-3.2 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        </button>
       </div>
       <p class="cover__to">Хүлээн авагч</p>
       <p class="cover__guest" id="coverGuest">Эрхэм зочин</p>
@@ -80,7 +88,7 @@
       <svg class="balloon balloon--right" aria-hidden="true"><use href="#balloon"/></svg>
 
       <p class="hero__kicker">Бидний бяцхан нар</p>
-      <h1 class="hero__name" data-bind="name">Амирлан</h1>
+      <h1 class="hero__name" data-bind="name">И.Амирлан</h1>
 
       <div class="cake">
         <div class="cake__candle">
@@ -88,15 +96,15 @@
             <span class="cake__fire"></span><span class="cake__smoke"></span>
           </button>
         </div>
-        <div class="cake__num" aria-hidden="true" data-bind="age">2</div>
+        <div class="cake__num" aria-hidden="true" data-bind="age">1</div>
       </div>
       <p class="hero__age">нас хүрч байна!</p>
-      <p class="hero__hint" id="blowHint" aria-live="polite">Лааны гал дээр дараад үлээгээрэй</p>
+      <p class="hero__hint" id="blowHint" aria-live="polite"></p>
 
       <p class="date-pill">
-        <span data-bind="dateShort">10.10</span>
+        <span data-bind="dateShort">10-03</span>
         <span data-bind="weekday">Бямба</span>
-        <span data-bind="time">12:00</span>
+        <span data-bind="time">11:00</span>
       </p>
     </header>
 
@@ -113,9 +121,9 @@
     <figure class="portrait" data-perch="right">
       <div class="portrait__stage">
         <img class="portrait__img" id="portraitImg" alt="" decoding="async">
-        <span class="portrait__fallback" aria-hidden="true" data-bind="initial">А</span>
+        <span class="portrait__fallback" aria-hidden="true">🎀</span>
       </div>
-      <figcaption class="portrait__caption" id="heroCaption">Удахгүй 2 настай</figcaption>
+      <figcaption class="portrait__caption" id="heroCaption">Удахгүй 1 настай</figcaption>
     </figure>
 
     <!-- ================= WHEN & WHERE ================= -->
@@ -124,7 +132,7 @@
       <div class="ticket" data-perch="right">
         <div class="ticket__part ticket__when">
           <div class="ticket__day">
-            <span class="ticket__day-num" data-bind="day">10</span>
+            <span class="ticket__day-num" data-bind="day">3</span>
             <span class="ticket__day-month" data-bind="monthLabel">10 сар</span>
           </div>
           <div class="ticket__when-text">
@@ -173,7 +181,7 @@
 
     <!-- ================= GALLERY ================= -->
     <section class="section section--bleed" aria-labelledby="h-gal">
-      <h2 class="section__title" id="h-gal">Хоёр жилийн дурсамж</h2>
+      <h2 class="section__title" id="h-gal">Нэг жилийн дурсамж</h2>
       <ul class="clothesline" id="gallery" tabindex="0" aria-label="Зургийн цомог, хажуу тийш гүйлгэнэ"></ul>
       <p class="section__hint">Хажуу тийш гүйлгэж үзээрэй</p>
     </section>
@@ -247,37 +255,6 @@
       </div>
     </section>
 
-    <!-- ================= WISHES ================= -->
-    <section class="section" aria-labelledby="h-wish">
-      <h2 class="section__title" id="h-wish">Ерөөлөө үлдээгээрэй</h2>
-      <div class="card" data-perch="left">
-        <form id="wishForm" novalidate>
-          <p class="card__lead">Ерөөлийг тань хөөрхөн карт болгож өгнө. Хадгалаад эсвэл шууд илгээгээрэй. Томроод уншихад нь бид хадгалж үлдээнэ.</p>
-          <div class="field">
-            <label class="field__label" for="wName">Хэнээс</label>
-            <input class="field__input" type="text" id="wName" maxlength="40" placeholder="Жишээ нь: Эмээ, өвөө нь">
-          </div>
-          <div class="field">
-            <label class="field__label" for="wText">Ерөөл</label>
-            <textarea class="field__input" id="wText" maxlength="240" placeholder="Жишээ нь: Бидний хөөрхөн охин үргэлж ийм инээмсэглэлтэй, эрүүл саруул өсөөрэй!"></textarea>
-          </div>
-          <button class="btn btn--solid btn--block" type="submit">Карт үүсгэх</button>
-          <p class="form-msg" id="wishMsg" role="status"></p>
-        </form>
-        <div class="card-preview" id="cardPreview" hidden>
-          <img id="cardImg" alt="Ерөөлийн карт">
-          <div class="btn-row">
-            <button class="btn btn--solid" type="button" id="shareCard">Илгээх</button>
-            <a class="btn btn--outline" id="saveCard" download="eroel-kart.png">Хадгалах</a>
-          </div>
-        </div>
-      </div>
-      <div class="wall" id="wishWall" hidden>
-        <h3 class="wall__title">Зочдын ерөөл</h3>
-        <ul class="wall__list" id="wallList"></ul>
-      </div>
-    </section>
-
     <!-- ================= FOOTER ================= -->
     <footer class="footer">
       <div class="bunting bunting--footer" aria-hidden="true">
@@ -289,13 +266,12 @@
     </footer>
   </main>
 
-  <script src="assets/js/config.js" defer></script>
-  <script src="assets/js/core.js" defer></script>
-  <script src="assets/js/effects.js" defer></script>
-  <script src="assets/js/render.js" defer></script>
-  <script src="assets/js/invite.js" defer></script>
-  <script src="assets/js/rsvp.js" defer></script>
-  <script src="assets/js/wishes.js" defer></script>
-  <script src="assets/js/scroll.js" defer></script>
+  <script src="assets/js/config.js?v=5" defer></script>
+  <script src="assets/js/core.js?v=5" defer></script>
+  <script src="assets/js/effects.js?v=5" defer></script>
+  <script src="assets/js/render.js?v=5" defer></script>
+  <script src="assets/js/invite.js?v=5" defer></script>
+  <script src="assets/js/rsvp.js?v=5" defer></script>
+  <script src="assets/js/scroll.js?v=5" defer></script>
 </body>
 </html>

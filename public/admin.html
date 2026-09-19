@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/admin.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=5">
+  <link rel="stylesheet" href="assets/css/admin.css?v=5">
 </head>
 <body>
   <main class="page admin">
@@ -47,11 +47,8 @@
       </div>
 
       <div class="admin__bar">
-        <div class="tabs" role="tablist">
-          <button class="tab is-active" role="tab" aria-selected="true" data-tab="rsvps" type="button">Хариу <span id="cntRsvp">0</span></button>
-          <button class="tab" role="tab" aria-selected="false" data-tab="wishes" type="button">Ерөөл <span id="cntWish">0</span></button>
-        </div>
-        <input class="field__input admin__search" id="search" type="search" placeholder="Хайх" aria-label="Хайх">
+        <h2 class="admin__subtitle">Хариу <span id="cntRsvp">0</span></h2>
+        <input class="field__input admin__search" id="search" type="search" placeholder="Нэрээр хайх" aria-label="Нэрээр хайх">
       </div>
 
       <ul class="entries" id="list" aria-live="polite"></ul>
@@ -65,7 +62,7 @@
     </section>
   </main>
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/admin.js"></script>
+  <script src="assets/js/config.js?v=5"></script>
+  <script src="assets/js/admin.js?v=5"></script>
 </body>
 </html>
