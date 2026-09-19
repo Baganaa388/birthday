@@ -22,3 +22,6 @@ data/
 
 # Screenshots / notes
 image*.png
+
+# Site images are needed (only the original photos in the repo root are excluded)
+!public/images/*.jpg
