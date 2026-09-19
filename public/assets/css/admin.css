@@ -48,6 +48,18 @@
 .badge--yes { background: var(--mint); }
 .badge--no { background: #F6D0D6; color: #8E1F35; }
 .entry__text { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.entry__delete {
+  margin-left: auto;
+  padding: 3px 12px;
+  border: 1.5px solid #E7A9B6;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8E1F35;
+  cursor: pointer;
+}
+.entry__delete:disabled { opacity: .5; }
 
 .admin__empty { padding: 30px 10px; text-align: center; color: var(--berry-soft); }
 .admin__updated { text-align: center; }

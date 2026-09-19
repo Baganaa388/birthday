@@ -1,0 +1,18 @@
+{
+  "name": "birthday-invitation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "I.Amirlan 2nd birthday invitation with RSVP, wishes and an admin page",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

@@ -1,6 +1,6 @@
 /* Wish card: turns a guest's message into a PNG they can save or share. */
 (function () {
-  const { C, $, when, reducedMotion } = App;
+  const { C, $, h, when, reducedMotion, api } = App;
 
   const W = 1080, H = 1350;
   const FLAG_COLORS = ["#F2A7B8", "#FFE3A1", "#BFE6D4", "#D6CCF5"];
@@ -141,11 +141,10 @@
       return;
     }
     setMsg("Карт үүсгэж байна…");
-    // Keep a copy for the family (admin page) when the sheet is connected.
-    if (C.rsvp.sheetUrl) {
-      fetch(C.rsvp.sheetUrl, { method: "POST", mode: "no-cors", body: JSON.stringify({ type: "wish", from, text }) })
-        .catch(() => {});
-    }
+    // Save on the server (shown on the wall and in admin); the card works without it.
+    api("wishes", { method: "POST", body: { from, text } })
+      .then(() => addToWall({ author: from, message: text }, true))
+      .catch(() => {});
     const canvas = await drawCard(from, text);
     const url = canvas.toDataURL("image/png");
     $("#cardImg").src = url;
@@ -155,6 +154,32 @@
     setMsg("Карт бэлэн боллоо.");
     preview.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
   });
+
+  /* ---------- wall of wishes from other guests ---------- */
+  const NOTE_COLORS = ["butter", "mint", "lilac", "rose"];
+  const wall = $("#wishWall");
+  const wallList = $("#wallList");
+
+  function note(w, i) {
+    return h("li", { class: `wall__note sticky--${NOTE_COLORS[i % NOTE_COLORS.length]}` },
+      h("p", { class: "wall__text", text: w.message }),
+      h("span", { class: "wall__author", text: w.author || "Нэрээ нууцалсан зочин" }));
+  }
+
+  function addToWall(w, isNew) {
+    const li = note(w, wallList.children.length);
+    if (isNew) li.classList.add("is-new");
+    wallList.prepend(li);
+    wall.hidden = false;
+  }
+
+  api("wishes")
+    .then(({ wishes }) => {
+      if (!wishes.length) return;
+      wallList.replaceChildren(...wishes.map(note));
+      wall.hidden = false;
+    })
+    .catch(() => {});
 
   $("#shareCard").addEventListener("click", async () => {
     const file = blob && new File([blob], "eroel-kart.png", { type: "image/png" });

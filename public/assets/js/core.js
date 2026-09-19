@@ -57,5 +57,36 @@ window.App = (function () {
     set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (_) {} }
   };
 
-  return { C, $, $$, h, fill, when, reducedMotion, isIOS, store };
+  /**
+   * Call the invitation server. Throws Error("unavailable") when there is no server
+   * (opened as a file, static hosting, offline) so callers can fall back to SMS.
+   */
+  async function api(path, { method = "GET", body } = {}) {
+    let res;
+    try {
+      res = await fetch(`api/${path}`, {
+        method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined
+      });
+    } catch (_) {
+      throw new Error("unavailable");
+    }
+    const data = await res.json().catch(() => null);
+    if (!data) throw new Error("unavailable");
+    if (!data.ok) throw new Error(data.error || "server_error");
+    return data;
+  }
+
+  // Random id kept per browser so a guest who edits their answer updates the same row.
+  function guestId() {
+    let id = store.get("guestId");
+    if (!id) {
+      id = (crypto.randomUUID && crypto.randomUUID()) || `g${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
+      store.set("guestId", id);
+    }
+    return id;
+  }
+
+  return { C, $, $$, h, fill, when, reducedMotion, isIOS, store, api, guestId };
 })();

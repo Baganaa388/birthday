@@ -10,3 +10,15 @@ CLAUDE.md
 
 # Test leftovers
 _t*.html
+
+# Node
+node_modules/
+
+# Database (guest answers stay on the server, not in git)
+data/
+*.db
+*.db-*
+.env
+
+# Screenshots / notes
+image*.png

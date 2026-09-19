@@ -187,7 +187,8 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   place-items: center;
   border-radius: 10px;
   background: var(--paper);
-  transition: transform .7s cubic-bezier(.3, .7, .3, 1) .45s;
+  opacity: 0;                      /* hidden until the flap opens, so no corners peek out */
+  transition: transform .7s cubic-bezier(.3, .7, .3, 1) .45s, opacity .2s ease .35s;
 }
 .envelope__letter-num {
   font-family: var(--font-display);
@@ -236,7 +237,7 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 
 .cover.is-open .envelope__seal { opacity: 0; }
 .cover.is-open .envelope__flap { transform: rotateX(180deg); z-index: 1; }
-.cover.is-open .envelope__letter { transform: translateY(-58%); }
+.cover.is-open .envelope__letter { transform: translateY(-58%); opacity: 1; }
 
 .cover__to { margin: 0; font-size: 14px; font-weight: 700; color: var(--berry-soft); }
 .cover__guest {
@@ -749,6 +750,30 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .card-preview { margin-top: 20px; }
 .card-preview img { border-radius: var(--radius-md); box-shadow: var(--shadow-paper); }
 
+/* Wall of wishes */
+.wall { margin-top: 34px; }
+.wall__title {
+  margin: 0 0 16px;
+  font-family: var(--font-hand);
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--berry);
+}
+.wall__list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.wall__note {
+  position: relative;
+  padding: 18px 18px 14px;
+  border-radius: 4px 4px 18px 4px;
+  box-shadow: 0 10px 14px -12px rgba(74, 22, 40, .6);
+}
+.wall__note:nth-child(odd) { transform: rotate(-1deg); }
+.wall__note:nth-child(even) { transform: rotate(1deg); }
+.wall__note.is-new { animation: note-in .6s cubic-bezier(.3, 1.5, .5, 1); }
+@keyframes note-in { from { opacity: 0; scale: .7; } }
+.wall__text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.wall__author { display: block; margin-top: 6px; font-family: var(--font-hand); font-size: 24px; line-height: 1.1; text-align: right; color: var(--berry); }
+
 /* ---------- 7. Footer ---------- */
 .footer { position: relative; margin-top: 64px; padding-top: 80px; text-align: center; color: var(--berry-soft); font-size: 15px; }
 .footer p { margin: 0 0 6px; }
@@ -829,8 +854,8 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 @keyframes flap-l { from { transform: rotateY(8deg); } to { transform: rotateY(72deg); } }
 @keyframes flap-r { from { transform: rotateY(-8deg); } to { transform: rotateY(-72deg); } }
 
-/* flying with the scroll (positioned by scroll.js) */
-.flyers { position: fixed; inset: 0; z-index: 31; overflow: hidden; pointer-events: none; }
+/* flying with the scroll (positioned by scroll.js); behind the content so they never cover text */
+.flyers { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .bfly--flying { position: absolute; left: 0; top: 0; will-change: transform; }
 
 /* landing on a card corner */

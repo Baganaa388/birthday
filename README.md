@@ -1,46 +1,76 @@
 # И.Амирлангийн 2 насны урилга
 
-Утсанд зориулсан төрсөн өдрийн урилгын сайт.
+Утсанд зориулсан төрсөн өдрийн урилга. Зочдын хариу, ерөөл серверийн өгөгдлийн санд (SQLite) хадгалагдаж, админ хуудсанд харагдана.
+
+## Ажиллуулах
+
+Node.js 22.13 буюу түүнээс шинэ хувилбар хэрэгтэй.
+
+```bash
+npm install
+npm start
+```
+
+- Урилга: http://localhost:3000
+- Админ: http://localhost:3000/admin (анхдагч нэвтрэх нэр `admin`, нууц үг `admin`)
+
+## Тохиргоо (орчны хувьсагч)
+
+| Хувьсагч         | Утга                                                         |
+|------------------|--------------------------------------------------------------|
+| `ADMIN_USER`     | Админы нэр (анхдагч `admin`)                                 |
+| `ADMIN_PASS`     | Админы нууц үг (анхдагч `admin`, заавал сольж тавь)          |
+| `SESSION_SECRET` | Урт санамсаргүй тэмдэгт. Сервер дахин асахад админ гарахгүй |
+| `DATA_DIR`       | `birthday.db` хадгалах хавтас (анхдагч `./data`)            |
+| `PORT`           | Порт (анхдагч `3000`)                                        |
+
+Жишээ: `.env.example`
 
 ## Бүтэц
 
 ```
-index.html              Хуудасны бүтэц
-assets/css/style.css    Загвар
-assets/js/config.js     ← ЗӨВХӨН ҮҮНИЙГ ЗАСНА: нэр, огноо, газар, хөтөлбөр, зураг
-assets/js/core.js       Туслах функцууд, огноо тооцоолох
-assets/js/render.js     config.js-ийн мэдээллийг хуудсанд оруулна
-assets/js/effects.js    Өнгийн цаас (конфетти), хөгжим
-assets/js/invite.js     Дугтуй нээх, лаа үлээх, тоолуур, календарь
-assets/js/rsvp.js       Ирэх эсэхээ мэдэгдэх хэсэг
-assets/js/wishes.js     Ерөөлийн карт үүсгэх
-assets/js/scroll.js     Гүйлгэх үеийн хөдөлгөөн: эрвээхэй, гялбаа, хэсгүүд гарч ирэх
-assets/js/admin.js      Админ хуудас (admin.html)
-backend/apps-script.gs  Google Sheets-т хадгалах скрипт
-images/*.webp           Дэвсгэргүй болгосон зургууд
+server/index.js         Express сервер: public/ болон API
+server/db.js            SQLite хүснэгтүүд (rsvps, wishes)
+server/guest.js         Зочны API: POST /api/rsvp, GET/POST /api/wishes
+server/admin.js         Админ API: нэвтрэх, жагсаалт, устгах
+server/rate-limit.js    Хэт олон хүсэлтээс хамгаалах
+
+public/index.html       Урилга
+public/admin.html       Админ хуудас
+public/assets/js/config.js   ← Урилгын мэдээлэл: нэр, огноо, газар, хөтөлбөр, зураг
+public/assets/js/*.js   Урилгын логик (rsvp, wishes, scroll, effects …)
+public/images/*.webp    Дэвсгэргүй болгосон зургууд
 ```
 
-## Засах
+## API
 
-1. `assets/js/config.js` доторх мэдээллийг өөрийнхөөрөө солино.
-2. `index.html`-ийн эхэн дэх `<title>` болон `og:` мөрүүдийг засна.
+| Арга   | Зам                        | Тайлбар                              |
+|--------|----------------------------|--------------------------------------|
+| POST   | `/api/rsvp`                | Хариу (нэг зочин засахад шинэчлэгдэнэ) |
+| GET    | `/api/wishes`              | Сүүлийн 30 ерөөл (урилга дээр)       |
+| POST   | `/api/wishes`              | Ерөөл нэмэх                          |
+| POST   | `/api/admin/login`         | Нэвтрэх (HttpOnly cookie)            |
+| POST   | `/api/admin/logout`        | Гарах                                |
+| GET    | `/api/admin/data`          | Бүх хариу, ерөөл                     |
+| DELETE | `/api/admin/rsvps/:id`     | Хариу устгах                         |
+| DELETE | `/api/admin/wishes/:id`    | Ерөөл устгах                         |
 
-## Хөгжим
+Сервергүй (жишээ нь файлаар нээсэн) үед хариу SMS-ээр явна.
 
-Анхдагчаар «Төрсөн өдрийн мэнд»-ийн хөгжмийн хайрцгийн хувилбар тоглоно (файл хэрэггүй).
-Өөр дуу тавих бол mp3 файлаа `assets/` хавтсанд хийгээд `config.js`-д `music: "assets/дуу.mp3"` гэж бичнэ.
+## Байршуулах
 
-## Админ хэсэг (хариу, ерөөл харах)
+Мэдээлэл алдагдахгүйн тулд `DATA_DIR`-ийг байнгын диск (volume) дээр тавина.
 
-`admin.html` хуудас. Хариу Google Sheets-т хадгалагдана.
-Тохируулах заавар: [backend/README.md](backend/README.md).
+**Railway:** GitHub репогоо холбоно → Variables-д `ADMIN_PASS`, `SESSION_SECRET`, `DATA_DIR=/data` → Volume нэмээд `/data`-д холбоно.
+
+**Docker (өөрийн сервер):**
+
+```bash
+docker build -t birthday .
+docker run -d -p 3000:3000 -v birthday-data:/data \
+  -e ADMIN_PASS=... -e SESSION_SECRET=... birthday
+```
 
 ## Зочин бүрт нэрээр нь
 
 Линкийн ард `?to=` нэмнэ: `https://таны-сайт/?to=Болд ах`
-
-## Байршуулах
-
-Https://app.netlify.com/drop руу дараах зүйлсийг агуулсан хавтас чирнэ:
-`index.html`, `assets/`, `images/`.
-Эх зургуудыг (`*.jpg`, `image.png`) оруулах шаардлагагүй.

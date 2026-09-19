@@ -1,6 +1,6 @@
-/* RSVP form: sends by SMS, or to Google Sheets when CONFIG.rsvp.sheetUrl is set. */
+/* RSVP form: saves to the server; falls back to SMS when there is no server. */
 (function () {
-  const { C, $, $$, when, isIOS, store } = App;
+  const { C, $, $$, when, isIOS, store, api, guestId } = App;
 
   const form = $("#rsvpForm");
   const msg = $("#rsvpMsg");
@@ -48,22 +48,28 @@
       name,
       attendance,
       adults: coming ? +$("#adults").textContent : 0,
-      kids: coming ? +$("#kids").textContent : 0,
-      time: new Date().toISOString()
+      kids: coming ? +$("#kids").textContent : 0
     };
     lastText = composeText(data);
 
-    if (C.rsvp.sheetUrl) {
-      setMsg("Илгээж байна…");
-      try {
-        await fetch(C.rsvp.sheetUrl, { method: "POST", mode: "no-cors", body: JSON.stringify({ type: "rsvp", ...data }) });
-      } catch (_) {
-        setMsg("Илгээж чадсангүй. Интернэтээ шалгаад дахин оролдоно уу.", true);
+    const submit = form.querySelector("[type=submit]");
+    submit.disabled = true;
+    setMsg("Илгээж байна…");
+    try {
+      await api("rsvp", { method: "POST", body: { guestId: guestId(), ...data } });
+      data.via = "server";
+    } catch (err) {
+      if (err.message !== "unavailable") {
+        setMsg(err.message === "too_many_requests"
+          ? "Хэт олон удаа илгээлээ. Түр хүлээгээд дахин оролдоно уу."
+          : "Илгээж чадсангүй. Нэрээ шалгаад дахин оролдоно уу.", true);
+        submit.disabled = false;
         return;
       }
-    } else {
+      data.via = "sms";
       location.href = `sms:${C.rsvp.phone}${isIOS ? "&" : "?"}body=${encodeURIComponent(lastText)}`;
     }
+    submit.disabled = false;
     store.set("rsvp", data);
     showThanks(data, true);
   });
@@ -72,7 +78,9 @@
     form.hidden = true;
     thanks.hidden = false;
     setMsg("");
-    $("#copyRsvp").hidden = !!C.rsvp.sheetUrl;
+    const bySms = d.via === "sms";
+    $("#copyRsvp").hidden = !bySms;
+    $("#copyNote").hidden = !bySms;
     lastText = lastText || composeText(d);
     $("#rsvpThanksText").textContent = d.attendance === NO
       ? `${d.name}, мэдэгдсэнд баярлалаа. Доор ерөөлөө үлдээгээрэй.`
