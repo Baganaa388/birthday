@@ -128,6 +128,19 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .choice input:checked + span { border-color: var(--berry); background: var(--milk-2); }
 .choice input:checked + span::before { border-color: var(--berry); background: radial-gradient(circle, var(--berry) 0 5px, #fff 5.5px); }
 .choice input:focus-visible + span { outline: 3px solid var(--berry); outline-offset: 2px; }
+/* time-slot choice: time on the left, how many people already chose it on the right */
+.choice__time { flex: 1; font-weight: 800; }
+.choice__count {
+  flex: none;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--mint);
+  font-size: 13px;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--berry);
+}
+.choice__count:empty { display: none; }
 
 .stepper {
   display: flex;
@@ -680,7 +693,15 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .ticket__day-month { font-weight: 800; font-size: 14px; margin-top: -8px; }
 .ticket__when-text { display: grid; line-height: 1.35; }
 .ticket__when-text strong { font-family: var(--font-display); font-size: 20px; color: var(--berry); }
-.ticket__when-text > span { font-weight: 800; font-size: 18px; color: var(--berry); }
+.ticket__slots { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+.ticket__slot {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--milk-2);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--berry);
+}
 .ticket__when-text small { font-size: 14px; color: var(--berry-soft); margin-top: 2px; }
 
 .ticket__perf { position: relative; height: 0; margin: 0 20px; border-top: 3px dashed rgba(162, 83, 110, .3); }
@@ -737,65 +758,6 @@ textarea.field__input { min-height: 116px; resize: vertical; }
   text-align: center;
   color: var(--berry);
 }
-
-/* Timeline */
-.timeline { position: relative; margin: 0; padding: 0; list-style: none; }
-.timeline::before {
-  content: "";
-  position: absolute;
-  left: 35px;
-  top: 16px;
-  bottom: 16px;
-  border-left: 3px dotted var(--berry-soft);
-  opacity: .45;
-}
-.timeline__item { display: grid; grid-template-columns: 72px 1fr; gap: 14px; padding: 10px 0; }
-.timeline__time {
-  position: relative;
-  height: max-content;
-  padding: 6px 0;
-  border-radius: 999px;
-  background: var(--paper);
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 15px;
-  text-align: center;
-  color: var(--berry);
-  box-shadow: 0 3px 0 rgba(122, 35, 66, .15);
-}
-.timeline__item:nth-child(3) .timeline__time { background: var(--butter); }
-.timeline__body strong { display: block; padding-top: 4px; line-height: 1.3; color: var(--berry); }
-.timeline__body span { font-size: 15px; color: var(--berry-soft); }
-
-/* Sticky notes */
-.stickies { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 0; padding: 0; list-style: none; }
-.sticky {
-  position: relative;
-  padding: 22px 14px 16px;
-  border-radius: 4px 4px 18px 4px;
-  box-shadow: 0 10px 14px -12px rgba(74, 22, 40, .6);
-}
-.sticky::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  width: 54px;
-  height: 18px;
-  margin-left: -27px;
-  background: rgba(255, 255, 255, .6);
-  transform: rotate(-3deg);
-}
-.sticky:nth-child(1) { transform: rotate(-2deg); }
-.sticky:nth-child(2) { transform: rotate(1.5deg); }
-.sticky:nth-child(3) { transform: rotate(1deg); }
-.sticky:nth-child(4) { transform: rotate(-1.5deg); }
-.sticky--butter { background: var(--butter); }
-.sticky--mint { background: var(--mint); }
-.sticky--lilac { background: var(--lilac); }
-.sticky--rose { background: var(--paper); }
-.sticky__label { display: block; font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--berry-soft); }
-.sticky__value { display: block; margin-top: 4px; font-family: var(--font-hand); font-size: 26px; line-height: 1.15; color: var(--berry); }
 
 /* Clothesline gallery */
 .section--bleed { margin-left: calc(var(--gutter) * -1); margin-right: calc(var(--gutter) * -1); }
@@ -912,19 +874,20 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 @keyframes bob { to { transform: translateY(-3px) rotate(-6deg); } }
 
 /* ---------- 9. Photo peeking over the RSVP card ---------- */
-/* a tilted polaroid tucked behind the card; it slides up when the section appears */
-.peek-wrap { position: relative; height: 120px; }
+/* polaroids fanned out and tucked behind the card; they slide up when the section appears.
+   --x is the offset from the middle photo, --y its distance (set in render.js). */
+.peek-wrap { position: relative; height: 140px; }
 .peek {
   position: absolute;
-  right: 7%;
-  bottom: -44px;
-  width: 132px;
+  left: calc(50% - var(--w, 116px) / 2 + var(--x) * var(--gap, 26%));
+  bottom: calc(-40px - var(--y) * 14px);
+  width: var(--w, 116px);
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: 62% 50%;
-  border: 7px solid #fff;
-  border-bottom-width: 24px;
-  rotate: 7deg;
+  object-position: 50% 35%;
+  border: 6px solid #fff;
+  border-bottom-width: 22px;
+  rotate: calc(var(--x) * 7deg);
   box-shadow: var(--shadow-paper);
 }
 .card--front { position: relative; z-index: 1; }
@@ -1002,7 +965,7 @@ textarea.field__input { min-height: 116px; resize: vertical; }
 .reveal--pop { scale: .55; }
 .reveal--swing { translate: 0 -40px; rotate: -16deg; }
 .reveal--peek { opacity: 1; }
-.reveal--peek .peek { translate: 0 80%; transition: translate 1s cubic-bezier(.3, 1.4, .5, 1) .15s; }
+.reveal--peek .peek { translate: 0 90%; transition: translate 1s cubic-bezier(.3, 1.4, .5, 1) calc(.15s + var(--i) * .12s); }
 .reveal--peek.is-visible .peek { translate: 0 0; }
 .reveal.is-visible { opacity: 1; translate: 0 0; scale: 1; rotate: 0deg; }
 

@@ -23,6 +23,7 @@ npm start
 | `SESSION_SECRET` | Урт санамсаргүй тэмдэгт. Сервер дахин асахад админ гарахгүй |
 | `DATA_DIR`       | `birthday.db` хадгалах хавтас (анхдагч `./data`)            |
 | `PORT`           | Порт (анхдагч `3000`)                                        |
+| `PUBLIC_URL`     | Сайтын бүтэн хаяг (жишээ `https://amirlan.up.railway.app`). Messenger-т линк явуулахад зураг харагдахад хэрэгтэй. Хоосон бол хүсэлтийн хаягаас авна |
 
 Жишээ: `.env.example`
 
@@ -37,7 +38,7 @@ server/rate-limit.js    Хэт олон хүсэлтээс хамгаалах
 
 public/index.html       Урилга
 public/admin.html       Админ хуудас
-public/assets/js/config.js   ← Урилгын мэдээлэл: нэр, огноо, газар, хөтөлбөр, зураг
+public/assets/js/config.js   ← Урилгын мэдээлэл: нэр, огноо, ирэх цагууд (slots), газар, зураг
 public/assets/js/*.js   Урилгын логик (rsvp, scroll, effects …)
 public/images/*.webp    Зургууд
 ```
@@ -46,7 +47,8 @@ public/images/*.webp    Зургууд
 
 | Арга   | Зам                        | Тайлбар                              |
 |--------|----------------------------|--------------------------------------|
-| POST   | `/api/rsvp`                | Хариу (нэг зочин засахад шинэчлэгдэнэ) |
+| POST   | `/api/rsvp`                | Хариу, сонгосон цаг (засахад шинэчлэгдэнэ) |
+| GET    | `/api/slots`               | Цаг тус бүрд бүртгүүлсэн хүний тоо   |
 | POST   | `/api/admin/login`         | Нэвтрэх (HttpOnly cookie)            |
 | POST   | `/api/admin/logout`        | Гарах                                |
 | GET    | `/api/admin/data`          | Бүх хариу                            |

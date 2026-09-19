@@ -55,7 +55,7 @@ function requireAdmin(req, res, next) {
   res.status(401).json({ ok: false, error: "unauthorized" });
 }
 
-const allRsvps = db.prepare("SELECT id, name, attendance, adults, kids, created_at, updated_at FROM rsvps ORDER BY updated_at DESC, id DESC");
+const allRsvps = db.prepare("SELECT id, name, attendance, slot, adults, kids, created_at, updated_at FROM rsvps ORDER BY updated_at DESC, id DESC");
 const deleteRsvp = db.prepare("DELETE FROM rsvps WHERE id = ?");
 
 export const adminRouter = Router();

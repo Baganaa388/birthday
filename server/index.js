@@ -1,5 +1,6 @@
 // Birthday invitation server: serves public/ and the JSON API.
 import express from "express";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { guestRouter } from "./guest.js";
@@ -15,6 +16,15 @@ app.use(express.json({ limit: "10kb" }));
 app.use("/api/admin", adminRouter);
 app.use("/api", guestRouter);
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "not_found" }));
+
+// index.html needs the site's full address in its og: tags (Messenger/Facebook previews).
+app.get(["/", "/index.html"], (req, res, next) => {
+  fs.readFile(path.join(publicDir, "index.html"), "utf8", (err, html) => {
+    if (err) return next(err);
+    const origin = process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
+    res.type("html").set("Cache-Control", "no-cache").send(html.replaceAll("%ORIGIN%", origin.replace(/\/$/, "")));
+  });
+});
 
 // Cache files only in production so local text edits show up on refresh.
 const isProd = process.env.NODE_ENV === "production";

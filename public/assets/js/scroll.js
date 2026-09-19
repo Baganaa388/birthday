@@ -31,8 +31,6 @@
     [".ticket", "up", 0],
     [".countdown__tile", "pop", 90],
     ["#calBtn", "up", 0],
-    [".timeline__item", "left", 110],
-    [".sticky", "pop", 110],
     [".polaroid", "swing", 120],
     [".card:not(.card--front)", "up", 0],
     [".peek-wrap", "peek", 0],

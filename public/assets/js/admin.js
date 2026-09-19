@@ -5,7 +5,9 @@
   const $ = s => document.querySelector(s);
   const NO = "Очиж чадахгүй";
 
+  const SLOTS = C.event.slots;
   let data = { rsvps: [] };
+  let slotFilter = "";            // "" = all slots
 
   $("#adminKicker").textContent = `${C.child.fullName || C.child.name} ${C.child.age} нас`;
 
@@ -135,22 +137,49 @@
     $("#stNo").textContent = data.rsvps.length - coming.length;
     $("#cntRsvp").textContent = data.rsvps.length;
 
+    // people and families per time slot
+    $("#slotStats").replaceChildren(...SLOTS.map(slot => {
+      const rows = coming.filter(r => r.slot === slot);
+      const people = rows.reduce((s, r) => s + r.adults + r.kids, 0);
+      const li = el("li", "slot-stat");
+      li.append(el("span", "slot-stat__time", slot), el("b", "slot-stat__people", `${people} хүн`),
+        el("span", "slot-stat__meta", `${rows.length} хариу`));
+      return li;
+    }));
+
+    // filter chips: all + each slot
+    $("#slotFilter").replaceChildren(...["", ...SLOTS].map(slot => {
+      const b = el("button", `chip${slot === slotFilter ? " is-active" : ""}`, slot || "Бүгд");
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(slot === slotFilter));
+      b.addEventListener("click", () => { slotFilter = slot; render(); });
+      return b;
+    }));
+
     const q = $("#search").value.trim().toLowerCase();
     const list = $("#list");
     list.replaceChildren();
 
-    data.rsvps.filter(r => r.name.toLowerCase().includes(q)).forEach(r => {
-      const no = r.attendance === NO;
-      const li = el("li", "entry");
-      const top = el("div", "entry__top");
-      top.append(el("span", "entry__name", r.name), el("span", "entry__date", fmtDate(r.updated_at)));
-      const meta = el("div", "entry__meta");
-      meta.append(el("span", `badge ${no ? "badge--no" : "badge--yes"}`, r.attendance));
-      if (!no) meta.append(el("span", "badge", `Том хүн ${r.adults}`), el("span", "badge", `Хүүхэд ${r.kids}`));
-      meta.append(deleteButton("rsvps", r, r.name));
-      li.append(top, meta);
-      list.append(li);
-    });
+    data.rsvps
+      .filter(r => r.name.toLowerCase().includes(q))
+      .filter(r => !slotFilter || r.slot === slotFilter)
+      .forEach(r => {
+        const no = r.attendance === NO;
+        const li = el("li", "entry");
+        const top = el("div", "entry__top");
+        top.append(el("span", "entry__name", r.name), el("span", "entry__date", fmtDate(r.updated_at)));
+        const meta = el("div", "entry__meta");
+        meta.append(el("span", `badge ${no ? "badge--no" : "badge--yes"}`, r.attendance));
+        if (!no) {
+          meta.append(
+            el("span", "badge badge--slot", r.slot || "Цаг сонгоогүй"),
+            el("span", "badge", `Том хүн ${r.adults}`),
+            el("span", "badge", `Хүүхэд ${r.kids}`));
+        }
+        meta.append(deleteButton("rsvps", r, r.name));
+        li.append(top, meta);
+        list.append(li);
+      });
 
     const empty = $("#empty");
     empty.hidden = list.children.length > 0;

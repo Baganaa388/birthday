@@ -16,9 +16,6 @@
     venue: C.event.venue,
     address: C.event.address,
     parking: C.event.parking,
-    arrival: C.event.arrival,
-    dressTitle: C.dressCode.title,
-    dressNote: C.dressCode.note,
     deadline: C.rsvp.deadline,
     phoneLabel: C.rsvp.phone.replace(/^\+976/, ""),
     ...when
@@ -27,7 +24,6 @@
     const v = bind[el.dataset.bind];
     if (v != null) el.textContent = v;
   });
-  document.title = `${C.child.fullName || C.child.name} ${C.child.age} нас`;
 
   /* ---------- personal greeting: ?to=Болд ах ---------- */
   const guest = new URLSearchParams(location.search).get("to");
@@ -74,17 +70,29 @@
   const portrait = $("#portraitImg");
   portrait.alt = C.child.name;
   portrait.onerror = () => portrait.closest(".portrait").classList.add("is-empty");
+  if (C.heroPhoto.position) portrait.style.objectPosition = C.heroPhoto.position;
   portrait.src = C.heroPhoto.src;
   $("#heroCaption").textContent = C.heroPhoto.caption;
 
-  /* peeking photo above the RSVP card */
-  if (C.peekPhoto) {
-    const peek = $("#peekImg");
-    peek.onerror = () => peek.remove();
-    peek.src = C.peekPhoto;
-  } else {
-    $("#peekImg").remove();
-  }
+  /* photos fanned out behind the RSVP card */
+  const peeks = (C.peekPhotos || []).slice(0, 5);
+  const mid = (peeks.length - 1) / 2;
+  const peekWrap = $("#peekWrap");
+  // More photos sit closer together so the fan still fits a phone screen.
+  peekWrap.style.setProperty("--gap", `${Math.min(26, 58 / Math.max(1, peeks.length - 1))}%`);
+  peekWrap.style.setProperty("--w", `${peeks.length > 3 ? 104 : 116}px`);
+  peeks.forEach((src, i) => {
+    const off = i - mid;                              // -2 … 2, 0 is the middle photo
+    const img = h("img", { class: "peek", attrs: { alt: "", decoding: "async", loading: "lazy" } });
+    img.style.setProperty("--x", off);
+    img.style.setProperty("--y", Math.abs(off));
+    img.style.setProperty("--i", i);
+    img.style.zIndex = 10 - Math.round(Math.abs(off));
+    img.onerror = () => img.remove();
+    img.src = src;
+    peekWrap.append(img);
+  });
+  if (!peeks.length) peekWrap.remove();
 
   $("#gallery").replaceChildren(...C.photos.map((p, i) =>
     h("li", { class: "polaroid" },
@@ -93,21 +101,8 @@
       h("span", { class: "polaroid__caption", text: p.caption }))
   ));
 
-  /* ---------- program ---------- */
-  $("#program").replaceChildren(...C.program.map(p =>
-    h("li", { class: "timeline__item" },
-      h("time", { class: "timeline__time", text: p.time }),
-      h("div", { class: "timeline__body" },
-        h("strong", { text: fill(p.title) }),
-        p.note ? h("span", { text: fill(p.note) }) : null))
-  ));
-
-  /* ---------- facts ---------- */
-  $("#facts").replaceChildren(...C.facts.map((f, i) =>
-    h("li", { class: `sticky sticky--${PASTELS[i % PASTELS.length]}` },
-      h("span", { class: "sticky__label", text: fill(f.label) }),
-      h("b", { class: "sticky__value", text: fill(f.value) }))
-  ));
+  /* ---------- time slots on the ticket ---------- */
+  $("#ticketSlots").replaceChildren(...C.event.slots.map(s => h("span", { class: "ticket__slot", text: s })));
 
   /* ---------- map & phone ---------- */
   const { lat, lng } = C.event;

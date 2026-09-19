@@ -3,22 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>И.Амирлан 1 нас</title>
-  <meta name="description" content="Бидний бяцхан И.Амирлан 1 нас хүрч байна. Анхны төрсөн өдрийн баярт урьж байна!">
+  <title>Амирлан 1 нас — Төрсөн өдрийн урилга</title>
+  <meta name="description" content="Бидний бяцхан Амирлан 1 нас хүрч байна. Төрсөн өдрийн баярт урьж байна!">
   <meta name="theme-color" content="#F9D3DA">
   <meta name="color-scheme" content="light">
 
-  <!-- Messenger, Facebook-т линк явуулахад харагдах мэдээлэл -->
+  <!-- Messenger, Facebook-т линк явуулахад харагдах мэдээлэл.
+       %ORIGIN% -ийг сервер сайтын бүтэн хаягаар (https://...) солино. -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="И.Амирлан 1 нас хүрч байна 🎈">
-  <meta property="og:description" content="10 сарын 3, Бямба гараг, 12:00. Өрнөх хороолол 9А байр, 1208 тоот. Баярт маань хүрэлцэн ирээрэй!">
-  <meta property="og:image" content="images/white-dress.webp">
+  <meta property="og:site_name" content="Төрсөн өдрийн урилга">
+  <meta property="og:title" content="Амирлан 1 нас — Төрсөн өдрийн урилга">
+  <meta property="og:description" content="10 сарын 3, Бямба гараг. Дарж үзээд ирэх цагаа сонгоорой 🎈">
+  <meta property="og:url" content="%ORIGIN%/">
+  <meta property="og:image" content="%ORIGIN%/images/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Амирлангийн зургууд">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=5">
+  <link rel="stylesheet" href="assets/css/style.css?v=10">
 </head>
 <body class="is-locked">
 
@@ -104,7 +111,7 @@
       <p class="date-pill">
         <span data-bind="dateShort">10-03</span>
         <span data-bind="weekday">Бямба</span>
-        <span data-bind="time">11:00</span>
+        <span><span data-bind="time">11:00</span>–<span data-bind="endTime">19:00</span></span>
       </p>
     </header>
 
@@ -137,8 +144,8 @@
           </div>
           <div class="ticket__when-text">
             <strong><span data-bind="weekday">Бямба</span> гараг</strong>
-            <span><span data-bind="time">12:00</span>–<span data-bind="endTime">15:00</span></span>
-            <small>Зочдыг <span data-bind="arrival">11:45</span>-аас угтана</small>
+            <span class="ticket__slots" id="ticketSlots"></span>
+            <small>Өөрт тохирох цагаа сонгоод ирээрэй</small>
           </div>
         </div>
         <div class="ticket__perf" aria-hidden="true"></div>
@@ -146,10 +153,6 @@
           <li>
             <span class="ticket__icon ticket__icon--lilac" aria-hidden="true">📍</span>
             <div><strong data-bind="venue"></strong><span data-bind="address"></span></div>
-          </li>
-          <li>
-            <span class="ticket__icon ticket__icon--rose" aria-hidden="true">🎀</span>
-            <div><strong data-bind="dressTitle"></strong><span data-bind="dressNote"></span></div>
           </li>
         </ul>
       </div>
@@ -164,19 +167,7 @@
         <div class="countdown__tile countdown__tile--lilac"><b id="cdM">0</b><span>минут</span></div>
         <div class="countdown__tile countdown__tile--rose"><b id="cdS">0</b><span>секунд</span></div>
       </div>
-      <a class="btn btn--outline btn--block" id="calBtn" href="#" download="birthday.ics">Календарьт нэмэх</a>
-    </section>
-
-    <!-- ================= PROGRAM ================= -->
-    <section class="section" aria-labelledby="h-prog">
-      <h2 class="section__title" id="h-prog">Баярын хөтөлбөр</h2>
-      <ol class="timeline" id="program"></ol>
-    </section>
-
-    <!-- ================= ABOUT HER ================= -->
-    <section class="section" aria-labelledby="h-about">
-      <h2 class="section__title" id="h-about"><span data-bind="name">Амирлан</span> одоо ийм болсон</h2>
-      <ul class="stickies" id="facts" data-perch="left"></ul>
+      <a class="btn btn--outline btn--block" id="calBtn" href="#" target="_blank" rel="noopener">Google Calendar-т нэмэх</a>
     </section>
 
     <!-- ================= GALLERY ================= -->
@@ -202,9 +193,7 @@
     <!-- ================= RSVP ================= -->
     <section class="section" aria-labelledby="h-rsvp" id="rsvp">
       <h2 class="section__title" id="h-rsvp">Ирэх эсэхээ мэдэгдээрэй</h2>
-      <div class="peek-wrap">
-        <img class="peek" id="peekImg" alt="" aria-hidden="true" decoding="async" loading="lazy">
-      </div>
+      <div class="peek-wrap" id="peekWrap" aria-hidden="true"></div>
       <div class="card card--front">
         <form id="rsvpForm" novalidate>
           <p class="card__lead">Хоол, суудлаа бэлдэхэд хэрэгтэй тул <b data-bind="deadline">10 сарын 5</b>-ны дотор хариу өгөөрэй.</p>
@@ -220,7 +209,12 @@
               <label class="choice"><input type="radio" name="att" value="Очиж чадахгүй"><span>Харамсалтай нь очиж чадахгүй</span></label>
             </div>
           </fieldset>
-          <div class="field-row" id="countsRow">
+          <div id="comingFields">
+          <fieldset class="field">
+            <legend class="field__label">Ирэх цагаа сонгоно уу</legend>
+            <div class="choices" id="slotChoices"></div>
+          </fieldset>
+          <div class="field-row">
             <div class="field">
               <span class="field__label" id="adLbl">Том хүн</span>
               <div class="stepper" data-min="1" data-max="10" role="group" aria-labelledby="adLbl">
@@ -237,6 +231,7 @@
                 <button type="button" data-step="1" aria-label="Хүүхэд нэмэх">+</button>
               </div>
             </div>
+          </div>
           </div>
           <button class="btn btn--solid btn--block" type="submit">Хариу илгээх</button>
           <p class="form-msg" id="rsvpMsg" role="status"></p>
@@ -266,12 +261,12 @@
     </footer>
   </main>
 
-  <script src="assets/js/config.js?v=5" defer></script>
-  <script src="assets/js/core.js?v=5" defer></script>
-  <script src="assets/js/effects.js?v=5" defer></script>
-  <script src="assets/js/render.js?v=5" defer></script>
-  <script src="assets/js/invite.js?v=5" defer></script>
-  <script src="assets/js/rsvp.js?v=5" defer></script>
-  <script src="assets/js/scroll.js?v=5" defer></script>
+  <script src="assets/js/config.js?v=10" defer></script>
+  <script src="assets/js/core.js?v=10" defer></script>
+  <script src="assets/js/effects.js?v=10" defer></script>
+  <script src="assets/js/render.js?v=10" defer></script>
+  <script src="assets/js/invite.js?v=10" defer></script>
+  <script src="assets/js/rsvp.js?v=10" defer></script>
+  <script src="assets/js/scroll.js?v=10" defer></script>
 </body>
 </html>

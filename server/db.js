@@ -22,3 +22,9 @@ db.exec(`
     updated_at  TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
   );
 `);
+
+// Added later: the arrival time slot a guest picked (e.g. "11:00–13:00").
+const columns = db.prepare("PRAGMA table_info(rsvps)").all().map(c => c.name);
+if (!columns.includes("slot")) {
+  db.exec("ALTER TABLE rsvps ADD COLUMN slot TEXT NOT NULL DEFAULT ''");
+}

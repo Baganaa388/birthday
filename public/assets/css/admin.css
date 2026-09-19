@@ -57,3 +57,31 @@
 
 .admin__empty { padding: 30px 10px; text-align: center; color: var(--berry-soft); }
 .admin__updated { text-align: center; }
+
+/* per-slot totals */
+.slot-stats { display: grid; gap: 8px; margin: 10px 0 24px; padding: 0; list-style: none; }
+.slot-stat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--paper);
+}
+.slot-stat__time { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--berry); }
+.slot-stat__people { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--berry); text-align: right; }
+.slot-stat__meta { grid-column: 2; font-size: 13px; color: var(--berry-soft); text-align: right; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 6px 12px;
+  border: 1.5px solid #E7A9B6;
+  border-radius: 999px;
+  background: var(--paper);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--berry);
+  cursor: pointer;
+}
+.chip.is-active { border-color: var(--berry); background: var(--berry); color: #fff; }
+.badge--slot { background: var(--butter); }

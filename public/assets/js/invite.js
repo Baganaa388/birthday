@@ -59,19 +59,27 @@
   }
   tick();
 
-  /* ---------- calendar (.ics) ---------- */
-  const stamp = d => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
-  const esc = s => s.replace(/([,;\\])/g, "\\$1");
-  const ics = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//birthday-invite//MN", "BEGIN:VEVENT",
-    `UID:${stamp(when.start)}-birthday@invite`,
-    `DTSTAMP:${stamp(new Date())}`,
-    `DTSTART:${stamp(when.start)}`,
-    `DTEND:${stamp(when.end)}`,
-    `SUMMARY:${esc(`${C.child.name} ${C.child.age} насны төрсөн өдөр`)}`,
-    `LOCATION:${esc(`${C.event.venue}, ${C.event.address}`)}`,
-    "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Маргааш төрсөн өдөр!", "END:VALARM",
-    "END:VEVENT", "END:VCALENDAR"
-  ].join("\r\n");
-  $("#calBtn").href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+  /* ---------- Google Calendar ---------- */
+  // Uses the guest's chosen time slot when there is one, otherwise the whole day.
+  const utc = d => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  function slotTimes(slot) {
+    const m = slot && slot.match(/(\d{1,2}):(\d{2})\s?[–-]\s?(\d{1,2}):(\d{2})/);
+    if (!m) return [when.start, when.end];
+    const day = C.event.start.slice(0, 10);                     // "2026-10-03"
+    const at = (h, min) => new Date(`${day}T${h.padStart(2, "0")}:${min}:00+08:00`);
+    return [at(m[1], m[2]), at(m[3], m[4])];
+  }
+  App.setCalendarSlot = slot => {
+    const [from, to] = slotTimes(slot);
+    const q = new URLSearchParams({
+      action: "TEMPLATE",
+      text: `${C.child.name} ${C.child.age} насны төрсөн өдөр`,
+      dates: `${utc(from)}/${utc(to)}`,
+      details: `Төрсөн өдрийн баяр. Урилга: ${location.origin}`,
+      location: C.event.address,
+      ctz: "Asia/Ulaanbaatar"
+    });
+    $("#calBtn").href = `https://calendar.google.com/calendar/render?${q}`;
+  };
+  App.setCalendarSlot(App.store.get("rsvp")?.slot);
 })();

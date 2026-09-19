@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=5">
-  <link rel="stylesheet" href="assets/css/admin.css?v=5">
+  <link rel="stylesheet" href="assets/css/style.css?v=10">
+  <link rel="stylesheet" href="assets/css/admin.css?v=10">
 </head>
 <body>
   <main class="page admin">
@@ -46,9 +46,13 @@
         <div class="stat stat--rose"><b id="stNo">0</b><span>Ирэхгүй</span></div>
       </div>
 
+      <h2 class="admin__subtitle">Цаг тус бүрээр</h2>
+      <ul class="slot-stats" id="slotStats"></ul>
+
       <div class="admin__bar">
         <h2 class="admin__subtitle">Хариу <span id="cntRsvp">0</span></h2>
         <input class="field__input admin__search" id="search" type="search" placeholder="Нэрээр хайх" aria-label="Нэрээр хайх">
+        <div class="chips" id="slotFilter" role="group" aria-label="Цагаар шүүх"></div>
       </div>
 
       <ul class="entries" id="list" aria-live="polite"></ul>
@@ -62,7 +66,7 @@
     </section>
   </main>
 
-  <script src="assets/js/config.js?v=5"></script>
-  <script src="assets/js/admin.js?v=5"></script>
+  <script src="assets/js/config.js?v=10"></script>
+  <script src="assets/js/admin.js?v=10"></script>
 </body>
 </html>
